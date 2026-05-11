@@ -6,8 +6,8 @@ networks:
 services:
   outline:
     image: docker.getoutline.com/outlinewiki/outline:latest
-    container_name: outline
-    user: "700:700"
+    container_name: ${OUTLINE_CONTAINER_NAME}
+    user: ${OUTLINE_WEB_USER_GROUP}
     #command for v1.2.0 as outline stopped using yarn
     command: node build/server/index.js
     #env_file: ./stack.env
@@ -44,7 +44,7 @@ services:
     #ports:
     #  - "3000:3000"
     volumes:
-      - /volume1/Docker/Outline/data:/var/lib/outline/data
+      - ${OUTLINE_LOCAL_DATA_DIR}:/var/lib/outline/data
     depends_on:
       - outline-redis
     networks:
@@ -53,13 +53,13 @@ services:
 
   outline-redis:
     image: redis
-    container_name: outline-redis
+    container_name: ${REDIS_CONTAINER_NAME}
     #env_file: ./stack.env
     restart: always
     expose:
       - "6379"
     volumes:
-      - /volume1/Docker/Outline/redis/redis.conf:/redis.conf
+      - ${REDIS_CONFIG}:/redis.conf
     command: ["redis-server", "/redis.conf"]
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
@@ -72,7 +72,7 @@ services:
 
   outline-web:
     image: nginx
-    container_name: outline-web
+    container_name: ${WEB_CONTAINER_NAME}
     ports:
     #  - '580:80'
       - '5443:5443'
@@ -80,18 +80,14 @@ services:
       - outline
     restart: always
     volumes:
-      - /volume1/Docker/Outline/web/nginx.conf:/etc/nginx/nginx.conf:ro
-      - /volume1/Docker/Outline/cert/tls.crt:/etc/nginx/ssl/tls.crt:ro
-      - /volume1/Docker/Outline/cert/tls.key:/etc/nginx/ssl/tls.key:ro
+      - ${WEB_NGINX_CONF}:/etc/nginx/nginx.conf:ro
+      - ${WEB_CERT}:/etc/nginx/ssl/tls.crt:ro
+      - ${WEB_CERT_KEY}:/etc/nginx/ssl/tls.key:ro
     healthcheck:
       test: ["CMD", "service", "nginx", "status"]
       interval: 30s
       timeout: 20s
       retries: 3
-    #environment:
-      # NGINX_HOST: mvserver01.home.truxtons.com:5443
-      # NGINX_PORT: 80
-      # NGINX_PORT_SSL: 443
     networks:
       outline-network:
         ipv4_address: 192.168.53.13
