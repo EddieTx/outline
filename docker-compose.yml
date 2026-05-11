@@ -41,8 +41,8 @@ services:
       DEBUG: ${DEBUG}
       LOG_LEVEL: ${LOG_LEVEL}
     restart: always
-    #ports:
-    #  - "3000:3000"
+    ports:
+      - "3000:3000"
     volumes:
       - ${OUTLINE_LOCAL_DATA_DIR}:/var/lib/outline/data
     depends_on:
