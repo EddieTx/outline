@@ -1,9 +1,7 @@
 networks:
-    outline-network:
-        ipam:
-            driver: default
-            config:
-              - subnet: 192.168.53.0/24
+  outline-network:
+    external: true
+    name: outline_outline-network
 
 services:
   outline:
@@ -21,7 +19,7 @@ services:
       - outline-redis
     networks:
       outline-network:
-        ipv4_address: 192.168.53.14
+        ipv4_address: 192.168.53.10
 
   outline-redis:
     image: redis
@@ -40,7 +38,7 @@ services:
       retries: 3
     networks:
       outline-network:
-        ipv4_address: 192.168.53.15
+        ipv4_address: 192.168.53.12
 
   outline-web:
     image: nginx
@@ -66,4 +64,4 @@ services:
       # NGINX_PORT_SSL: 443
     networks:
       outline-network:
-        ipv4_address: 192.168.53.16
+        ipv4_address: 192.168.53.13
