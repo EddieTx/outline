@@ -38,7 +38,7 @@ services:
       RATE_LIMITER_DURATION_WINDOW: ${RATE_LIMITER_DURATION_WINDOW}
       ENABLE_UPDATES: ${ENABLE_UPDATES}
       DEBUG: ${DEBUG}
-LOG_LEVEL: info
+      LOG_LEVEL: ${LOG_LEVEL}
     restart: always
     #ports:
     #  - "3000:3000"
