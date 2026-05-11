@@ -45,6 +45,8 @@ services:
       - "3000:3000"
     volumes:
       - ${OUTLINE_LOCAL_DATA_DIR}:/var/lib/outline/data
+      - ${OUTLINE_LOCAL_FAVICON_16}:/opt/outline/public/images/favicon-16.png
+      - ${OUTLINE_LOCAL_FAVICON_32}:/opt/outline/public/images/favicon-32.png
     depends_on:
       - outline-redis
     networks:
